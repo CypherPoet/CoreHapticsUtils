@@ -4,19 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "MyPackageName",
+    name: "CypherPoetCoreHapticsUtils",
     platforms: [
         .iOS(.v15),
-        .macOS(.v12),
+        .macCatalyst(.v15),
         .tvOS(.v15),
-        .watchOS(.v8),
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
-            name: "MyLibraryName",
+            name: "CoreHapticsUtils",
             targets: [
-                "MyLibraryName",
+                "CoreHapticsUtils",
             ]
         ),
     ],
@@ -28,20 +27,20 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "MyLibraryName",
+            name: "CoreHapticsUtils",
             dependencies: [
             ],
-            path: "Sources/MyLibraryName/",
+            path: "Sources/CoreHapticsUtils/",
             resources: [
                 .process("Resources"),
             ]
         ),
         .testTarget(
-            name: "MyLibraryNameTests",
+            name: "CoreHapticsUtilsTests",
             dependencies: [
-                "MyLibraryName",
+                "CoreHapticsUtils",
             ],
-            path: "Tests/MyLibraryName/",
+            path: "Tests/CoreHapticsUtils/",
             exclude: [
                 "Resources/README.md",
                 "Toolbox/README.md",
