@@ -21,3 +21,9 @@ Furthermore, the framework ignores unsupported keys.
 ### Essentials
 
 - ``CoreHapticsUtils/AHAPPattern/PatternElement``
+
+
+### Event Parameters
+
+- ``CoreHapticsUtils/AHAPPattern/EventParameterID``
+- ``CoreHapticsUtils/AHAPPattern/DynamicParameterID``
