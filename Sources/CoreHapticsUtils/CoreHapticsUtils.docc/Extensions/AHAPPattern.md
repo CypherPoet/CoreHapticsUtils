@@ -20,4 +20,4 @@ Furthermore, the framework ignores unsupported keys.
 
 ### Essentials
 
-- ``AHAPPattern/PatternElement``
+- ``CoreHapticsUtils/AHAPPattern/PatternElement``
