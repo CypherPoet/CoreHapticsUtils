@@ -59,10 +59,8 @@ extension AHAPPattern {
 // MARK: -  Computeds
 extension AHAPPattern {
     
-    public var chHapticPattern: CHHapticPattern? {
-        guard let dictionary = dictionaryRepresentation() else {
-            return nil
-        }
+    public func chHapticPattern() throws -> CHHapticPattern {
+        let dictionary = try dictionaryRepresentation()
         
         return try CHHapticPattern(dictionary: dictionary)
     }
