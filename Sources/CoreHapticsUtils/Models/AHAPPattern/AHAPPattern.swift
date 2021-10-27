@@ -21,25 +21,6 @@ public struct AHAPPattern {
 // MARK: - Init
 extension AHAPPattern {
     
-    public init(
-        fileName: String,
-        bundle: Bundle = .main
-    ) throws {
-        guard let fileURL = bundle.url(
-            forResource: fileName,
-            withExtension: "ahap"
-        ) else {
-            throw Error.ahapFileNotFound(fileName: fileName)
-        }
-        
-        guard let data = try? Data(contentsOf: fileURL) else {
-            throw Error.failedToMakeDataFromFile(fileURL: fileURL)
-        }
-        
-        try self.init(data: data)
-    }
-    
-    
     public init(data: Data) throws {
         let decoder = JSONDecoder()
         
@@ -54,8 +35,7 @@ extension AHAPPattern: Codable {}
 extension AHAPPattern {
     
     public enum Error: Swift.Error {
-        case ahapFileNotFound(fileName: String)
-        case failedToMakeDataFromFile(fileURL: URL)
+        case failedToMakeDictionaryFromPattern(Swift.Error)
     }
 }
 
