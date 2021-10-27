@@ -64,7 +64,7 @@ extension AHAPPattern {
             return nil
         }
         
-        return try? .init(dictionary: dictionary)
+        return try CHHapticPattern(dictionary: dictionary)
     }
 }
 
@@ -72,15 +72,17 @@ extension AHAPPattern {
 // MARK: - JSON-Formatted Dictionary Representation
 extension AHAPPattern {
     
-    public func dictionaryRepresentation() -> CHHapticPatternDictionary? {
-        guard let data: Data = try? JSONEncoder().encode(self) else {
-            return nil
+    public func dictionaryRepresentation() throws -> CHHapticPatternDictionary {
+        do {
+            let data = try JSONEncoder().encode(self)
+            
+            return try JSONSerialization
+                .jsonObject(
+                    with: data,
+                    options: .allowFragments
+            ) as! [CHHapticPattern.Key: Any]
+        } catch {
+            throw Error.failedToMakeDictionaryFromPattern(error)
         }
-  
-        return try? JSONSerialization
-            .jsonObject(
-                with: data,
-                options: .allowFragments
-        ) as? [CHHapticPattern.Key: Any]
     }
 }
