@@ -18,12 +18,15 @@ extension PatternElement {
         public let time: TimeInterval?
         public let eventType: EventType?
         public let eventDuration: TimeInterval?
+        public let waveformPath: String?
         public let eventParameters: [EventParameter]?
+        
         
         enum CodingKeys: CHHapticPattern.Key.RawValue, CodingKey {
             case time = "Time"
             case eventType = "EventType"
             case eventDuration = "EventDuration"
+            case waveformPath = "EventWaveformPath"
             case eventParameters = "EventParameters"
         }
     }
@@ -36,6 +39,8 @@ extension Event {
     public enum EventType: CHHapticPattern.Key.RawValue, Codable {
         case hapticContinuous = "HapticContinuous"
         case hapticTransient = "HapticTransient"
+        case audioContinuous = "AudioContinuous"
+        case audioCustom = "AudioCustom"
     }
 }
 

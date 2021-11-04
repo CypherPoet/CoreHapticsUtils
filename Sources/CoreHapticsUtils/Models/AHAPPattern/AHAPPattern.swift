@@ -12,6 +12,7 @@ public typealias CHHapticPatternDictionary = [CHHapticPattern.Key: Any]
 
 
 public struct AHAPPattern {
+    public var name: String?
     public var version: Double?
     public var metadata: Metadata?
     public var pattern: [PatternElement]
