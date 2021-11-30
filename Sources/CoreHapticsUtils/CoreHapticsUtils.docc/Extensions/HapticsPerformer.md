@@ -8,6 +8,17 @@ A type that controls methods for playing Core Haptics patterns and calling metho
 
 ## Topics
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+### Creating Players
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- ``makePlayer(with:)-5kdjr``
+- ``makePlayer(with:)-4l3zn``
+
+
+### Configuring Performer Abilities
+
+- ``Abilities-swift.enum``
+
+
+### Configuring Engine Continuity
+
+- ``EngineContinuity-swift.enum``

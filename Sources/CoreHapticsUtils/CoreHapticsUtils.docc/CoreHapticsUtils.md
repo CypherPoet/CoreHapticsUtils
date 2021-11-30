@@ -11,6 +11,8 @@ _Utilities for using Core Haptics in iOS projects._
 
 - ``AHAPPattern``
 - ``AHAPPattern/PatternElement``
+- ``HapticsPerformer``
+
 
 ### Parameter ID Enumerations
 
