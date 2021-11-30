@@ -9,6 +9,6 @@ An item found in an ``CoreHapticsUtils/AHAPPattern/PatternElement`` array that d
 
 ## Topics
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+### Defining Control Points
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- ``parameterCurveControlPoints``

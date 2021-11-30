@@ -9,7 +9,13 @@ import SwiftUI
 
 enum TestConstants {
 
-    enum AHAPFileNames {
-        static let sample1 = "ahap-sample-1"
+    enum FileNames {
+        enum AHAPPatterns {
+            static let example1 = "example-1"
+        }
+        
+        enum AHAPPatternElements {
+            static let example1 = "example-1"
+        }
     }
 }

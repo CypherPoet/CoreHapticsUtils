@@ -47,7 +47,9 @@ let package = Package(
                 "Toolbox/README.md",
             ],
             resources: [
-                .process("Resources"),
+                .process("Resources/README.md"),
+                .copy("Resources/ahap-patterns"),
+                .copy("Resources/ahap-pattern-elements"),
             ]
         ),
     ]

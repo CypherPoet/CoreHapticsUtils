@@ -14,13 +14,18 @@ fileprivate typealias DynamicParameterCurve = AHAPPattern.PatternElement.Dynamic
 extension AHAPPattern.PatternElement {
     
     public struct DynamicParameterCurve: Codable {
+        
         public let parameterID: AHAPPattern.DynamicParameterID?
-        public let time: TimeInterval?
+        
+        /// The time at which to start applying the parameter curve.
+        public let relativeTime: TimeInterval?
+        
+        /// An array of control points defining how the parameter curve changes over time.
         public let parameterCurveControlPoints: [ControlPoint]?
         
         enum CodingKeys: CHHapticPattern.Key.RawValue, CodingKey {
             case parameterID = "ParameterID"
-            case time = "Time"
+            case relativeTime = "Time"
             case parameterCurveControlPoints = "ParameterCurveControlPoints"
         }
     }
@@ -31,7 +36,12 @@ extension AHAPPattern.PatternElement {
 extension DynamicParameterCurve {
     
     public struct ControlPoint: Codable {
+        
+        /// The time at which the associated parameter reaches this value,
+        /// relative to the start time of the parameter curve.
         public let time: TimeInterval?
+        
+        /// The parameter value of the point.
         public let parameterValue: Double?
         
         enum CodingKeys: CHHapticPattern.Key.RawValue, CodingKey {

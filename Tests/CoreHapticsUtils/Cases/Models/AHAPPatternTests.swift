@@ -14,8 +14,14 @@ class AHAPPatternTests: XCTestCase {
     private typealias SystemUnderTest = AHAPPattern
 
     private var bundle: Bundle!
-    private var fileName: String!
+//    private var fileName: String!
+    private var patternName: String? = nil
+    private var ahapVersion: Double!
+    private var patternMetadata: AHAPPattern.Metadata? = nil
+    private var patternElements: [AHAPPattern.PatternElement] = []
+    
     private var sut: SystemUnderTest!
+    private var chHapticPatternFromSUT: CHHapticPattern!
 }
 
 
@@ -26,9 +32,10 @@ extension AHAPPatternTests {
         try await super.setUp()
         
         bundle = .module
-        fileName = TestConstants.AHAPFileNames.sample1
+        ahapVersion = 1.0
+//        fileName = TestConstants.AHAPFileNames.sample1
 
-//        sut = makeSUT()
+//        sut = makeSUTFromProperties()
     }
 
 
@@ -36,8 +43,15 @@ extension AHAPPatternTests {
         try await super.tearDown()
 
         bundle = nil
-        fileName = nil
+//        fileName = nil
+        
+        patternName = nil
+        ahapVersion = nil
+        patternMetadata = nil
+        patternElements = []
+        
         sut = nil
+        chHapticPatternFromSUT = nil
     }
 }
 
@@ -45,104 +59,100 @@ extension AHAPPatternTests {
 // MARK: - Factories
 extension AHAPPatternTests {
 
-    private func makeSUT() throws -> SystemUnderTest {
-        try .init(
-            fileName: fileName,
-            bundle: bundle
+    private func makeSUTFromProperties() -> SystemUnderTest {
+        .init(
+            name: patternName,
+            version: ahapVersion,
+            metadata: patternMetadata,
+            pattern: patternElements
         )
+    }
+    
+    
+    private func makeSUTFromData(
+        _ data: Data,
+        decodingWith decoder: JSONDecoder
+    ) throws -> SystemUnderTest {
+        try decoder.decode(SystemUnderTest.self, from: data)
     }
 }
 
 
 // MARK: - "Given" Helpers (Conditions Exist)
 extension AHAPPatternTests {
-
-    private func givenSomething() {
-        // some state or condition is established
-    }
 }
 
 
 // MARK: - "When" Helpers (Actions Are Performed)
 extension AHAPPatternTests {
 
-    private func whenSomethingHappens() {
-        // perform some action
-    }
-}
-
-
-// MARK: - Test Initialization with Custom Arguments
-extension AHAPPatternTests {
-
-    func test_Init_GivenFileName_WhenFileCantBeFound_ThrowsAHAPFileNotFoundError() throws {
-        fileName = "nope"
+    private func whenSUTIsInitializedFromDecoder(
+        _ decoder: JSONDecoder = .init(),
+        usingDataInFileNamed fileName: String = TestConstants.FileNames.AHAPPatterns.example1,
+        withExtension extensionName: String = "ahap"
+    ) throws {
+        let url = bundle.url(
+            forResource: fileName,
+            withExtension: extensionName,
+            subdirectory: "ahap-patterns"
+        )!
+        let data = try Data(contentsOf: url)
         
-        do {
-            sut = try makeSUT()
-            XCTFail("Expected error to be thrown before here.")
-        } catch let ahapPatternError as AHAPPattern.Error {
-            switch ahapPatternError {
-            case .ahapFileNotFound(let fileName):
-                XCTAssertEqual(fileName, self.fileName)
-            default:
-                XCTFail("Unexpected error type")
-            }
-        } catch {
-            XCTFail("Unexpected error type")
-        }
+        sut = try makeSUTFromData(data, decodingWith: decoder)
     }
     
     
-    func test_Init_GivenFileName_WhenFileNameIsValidAHAPFile_CreatesPattern() throws {
-        do {
-            sut = try makeSUT()
-        } catch {
-            XCTFail("Unexpected error: \(error.localizedDescription)")
-        }
+    private func whenCHHapticPatternIsComputedFromSUT() throws {
+        chHapticPatternFromSUT = try sut.chHapticPattern()
+    }
+    
+    
+    private func whenPatternElementsAreInitializedFromDecoder(
+        _ decoder: JSONDecoder = .init(),
+        usingDataInFileNamed fileName: String = TestConstants.FileNames.AHAPPatternElements.example1
+    ) throws {
+        let patternElementsURL = bundle.url(
+            forResource: fileName,
+            withExtension: "json",
+            subdirectory: "ahap-pattern-elements"
+        )!
+        
+        let patternElementData = try Data(contentsOf: patternElementsURL)
+        
+        patternElements = try JSONDecoder().decode(
+            [AHAPPattern.PatternElement].self,
+            from: patternElementData
+        )
     }
 }
-
-
-// MARK: - Test Initial Properties
-extension AHAPPatternTests {
-
-    func test_Init_GivenDataWithListOfPatternElements_StorePatternsArray() throws {
-        sut = try makeSUT()
-        
-        let patternElements = try XCTUnwrap(sut.pattern)
-        
-        XCTAssertEqual(patternElements.count, 5)
-    }
-}
-
 
 
 // MARK: - Test Dictionary Representation
 extension AHAPPatternTests {
 
     func test_DictionaryRepresentation_GivenPatternWithVersionAndElements_CreatesDictionary() throws {
-        sut = try makeSUT()
+        sut = makeSUTFromProperties()
         
         let _ = try XCTUnwrap(sut.dictionaryRepresentation())
     }
     
     
-    func test_DictionaryRepresentation_WhenDictionaryIsNotNil_GeneratesDictionaryThatCanInitializeACHHapticPatternInstance() throws {
-        sut = try makeSUT()
+    func test_ComputedCHHapticPattern_WhenDictionaryIsNotNil_ComputesCHHapticPatternInstance() throws {
+        try whenSUTIsInitializedFromDecoder()
+        try whenCHHapticPatternIsComputedFromSUT()
         
-        let initialDictionary = try XCTUnwrap(sut.dictionaryRepresentation())
-        let chHapticPattern = try CHHapticPattern(dictionary: initialDictionary)
-        let exportedDictionary = try chHapticPattern.exportDictionary() as CHHapticPatternDictionary
-        
-        XCTAssertEqual(initialDictionary.keys.count, exportedDictionary.keys.count)
-        XCTAssertEqual(initialDictionary.keys, exportedDictionary.keys)
+        XCTAssertGreaterThan(chHapticPatternFromSUT.duration, .zero)
     }
     
     
-    func test_ComputedCHHapticPattern_WhenDictionaryIsNotNil_ComputesCHHapticPatternInstance() throws {
-        sut = try makeSUT()
+    func test_DictionaryRepresentation_WhenDictionaryIsNotNil_GeneratesDictionaryThatCanInitializeACHHapticPatternInstance() throws {
+        try whenSUTIsInitializedFromDecoder()
+        try whenCHHapticPatternIsComputedFromSUT()
+
+        let initialDictionary = sut.dictionaryRepresentation()
+        let exportedDictionary = try chHapticPatternFromSUT.exportDictionary() as CHHapticPatternDictionary
         
-        let _ = try XCTUnwrap(sut.chHapticPattern)
+        XCTAssertEqual(initialDictionary.keys.count, exportedDictionary.keys.count)
+        XCTAssertEqual(initialDictionary.keys, exportedDictionary.keys)
     }
 }

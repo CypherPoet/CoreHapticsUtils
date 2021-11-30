@@ -8,37 +8,34 @@ import Foundation
 import CoreHaptics
 
 
-public typealias CHHapticPatternDictionary = [CHHapticPattern.Key: Any]
-
-
 public struct AHAPPattern {
     public var name: String?
-    public var version: Double?
+    public var version: Double
     public var metadata: Metadata?
     public var pattern: [PatternElement]
-}
-
-
-// MARK: - Init
-extension AHAPPattern {
     
-    public init(data: Data) throws {
-        let decoder = JSONDecoder()
-        
-        self = try decoder.decode(Self.self, from: data)
+    
+    // MARK: - Init
+    public init(
+        name: String? = nil,
+        version: Double,
+        metadata: Metadata? = nil,
+        pattern: [PatternElement] = []
+    ){
+        self.name = name
+        self.version = version
+        self.metadata = metadata
+        self.pattern = pattern
     }
 }
+
+
+extension AHAPPattern {
+    public typealias Metadata = [String: String]
+}
+
 
 extension AHAPPattern: Codable {}
-
-
-// MARK: -  Error
-extension AHAPPattern {
-    
-    public enum Error: Swift.Error {
-        case failedToMakeDictionaryFromPattern(Swift.Error)
-    }
-}
 
 
 // MARK: - Coding Keys
@@ -52,16 +49,11 @@ extension AHAPPattern {
 }
 
 
-extension AHAPPattern {
-    public typealias Metadata = [String: String]
-}
-
-
 // MARK: -  Computeds
 extension AHAPPattern {
     
     public func chHapticPattern() throws -> CHHapticPattern {
-        let dictionary = try dictionaryRepresentation()
+        let dictionary = dictionaryRepresentation()
         
         return try CHHapticPattern(dictionary: dictionary)
     }
@@ -71,17 +63,13 @@ extension AHAPPattern {
 // MARK: - JSON-Formatted Dictionary Representation
 extension AHAPPattern {
     
-    public func dictionaryRepresentation() throws -> CHHapticPatternDictionary {
-        do {
-            let data = try JSONEncoder().encode(self)
-            
-            return try JSONSerialization
-                .jsonObject(
-                    with: data,
-                    options: .allowFragments
-            ) as! [CHHapticPattern.Key: Any]
-        } catch {
-            throw Error.failedToMakeDictionaryFromPattern(error)
-        }
+    public func dictionaryRepresentation() -> CHHapticPatternDictionary {
+        let data = try! JSONEncoder().encode(self)
+
+        return try! JSONSerialization
+            .jsonObject(
+                with: data,
+                options: .fragmentsAllowed
+        ) as! CHHapticPatternDictionary
     }
 }
