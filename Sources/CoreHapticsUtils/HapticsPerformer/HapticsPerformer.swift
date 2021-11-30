@@ -115,7 +115,7 @@ extension HapticsPerformer {
     }
     
     
-    private func destroyHapticEngine() async throws {
+    public func destroyHapticEngine() async throws {
         try await stopEngine()
         
         engine = nil
@@ -125,10 +125,6 @@ extension HapticsPerformer {
     
     /// Call at the moment in which you want haptic events to play.
     private func startEngine() async throws {
-        if case .uninitialized = engineState {
-            try await createHapticEngine()
-        }
-        
         do {
             try await engine.start()
             engineState = .started
@@ -262,7 +258,7 @@ extension HapticsPerformer {
 // MARK: -  Computeds
 extension HapticsPerformer {
     
-    var engineFinishAction: CHHapticEngine.FinishedAction {
+    private var engineFinishAction: CHHapticEngine.FinishedAction {
         switch engineContinuity {
         case .stopWhenPlayersFinish:
             return .stopEngine
@@ -325,7 +321,7 @@ extension HapticsPerformer {
         
         /// The haptic engine ignores audio events.
         ///
-        /// Setting this property to true causes the engine to ignore all audio events,
+        /// Setting this property to `true` causes the engine to ignore all audio events,
         /// such as `audioContinuous` and `audioCustom`.
         /// This also reduces latency of starting haptic playback.
         ///
@@ -333,7 +329,7 @@ extension HapticsPerformer {
         /// until you stop and restart the engine.
         case hapticsOnly
         
-        /// play haptics and audio
+        /// The haptic engine will attempt to play haptics and audio events.
         case audioEnabled
     }
 }
