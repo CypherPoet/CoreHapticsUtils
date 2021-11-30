@@ -14,7 +14,6 @@ class AHAPPatternTests: XCTestCase {
     private typealias SystemUnderTest = AHAPPattern
 
     private var bundle: Bundle!
-//    private var fileName: String!
     private var patternName: String? = nil
     private var ahapVersion: Double!
     private var patternMetadata: AHAPPattern.Metadata? = nil
@@ -33,9 +32,6 @@ extension AHAPPatternTests {
         
         bundle = .module
         ahapVersion = 1.0
-//        fileName = TestConstants.AHAPFileNames.sample1
-
-//        sut = makeSUTFromProperties()
     }
 
 
@@ -43,7 +39,6 @@ extension AHAPPatternTests {
         try await super.tearDown()
 
         bundle = nil
-//        fileName = nil
         
         patternName = nil
         ahapVersion = nil

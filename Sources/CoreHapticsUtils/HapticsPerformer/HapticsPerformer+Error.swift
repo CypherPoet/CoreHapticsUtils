@@ -6,7 +6,6 @@
     
 import Foundation
 import CoreHaptics
-import CoreHapticsUtils
 
 
 extension HapticsPerformer {
