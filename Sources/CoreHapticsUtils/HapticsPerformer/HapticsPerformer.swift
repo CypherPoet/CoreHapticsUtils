@@ -176,25 +176,6 @@ extension HapticsPerformer {
     }
 
     
-    public func restart(
-        playbackFor player: CHHapticPatternPlayer
-    ) async throws {
-        try await startEngineIfNecessary()
-        
-        try player.start(atTime: 0)
-    }
-
-  
-    public func resume(
-        playing player: CHHapticAdvancedPatternPlayer,
-        atTime time: TimeInterval = CHHapticTimeImmediate
-    ) async throws {
-        try await startEngineIfNecessary()
-        
-        try player.resume(atTime: time)
-    }
-
-    
     public func start(
         player: CHHapticPatternPlayer,
         atTime time: TimeInterval = CHHapticTimeImmediate
@@ -216,6 +197,25 @@ extension HapticsPerformer {
         }
     }
     
+    
+    public func restart(
+        playbackFor player: CHHapticPatternPlayer
+    ) async throws {
+        try await startEngineIfNecessary()
+        
+        try player.start(atTime: 0)
+    }
+
+  
+    public func resume(
+        playing player: CHHapticAdvancedPatternPlayer,
+        atTime time: TimeInterval = CHHapticTimeImmediate
+    ) async throws {
+        try await startEngineIfNecessary()
+        
+        try player.resume(atTime: time)
+    }
+
     
     public func stop(
         player: CHHapticAdvancedPatternPlayer,
