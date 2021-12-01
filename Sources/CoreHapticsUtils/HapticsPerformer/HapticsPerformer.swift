@@ -6,6 +6,7 @@
     
 import Foundation
 import CoreHaptics
+import os
 
 
 public final class HapticsPerformer {
@@ -68,9 +69,10 @@ public final class HapticsPerformer {
             guard let self = self else { return .stopEngine }
             
             if let error = possibleError {
-                print("⚠️⚠️⚠️ Player finished with error: \(error)")
+                Self.logger.error("⚠️⚠️⚠️ Player finished with error: \(error.localizedDescription)")
             } else {
-                print("✅✅✅ Player finished successfully")
+                Self.logger.info("✅✅✅ Player finished successfully")
+                
                 self.engineState = .awaitingStart
                 self.onPlayersFinished?()
             }
@@ -275,25 +277,12 @@ extension HapticsPerformer {
     private func handleEngineStopFromExternalEvent(
         reason: CHHapticEngine.StoppedReason
     ) {
-        print("The engine stopped for reason: \(reason)")
-        switch reason {
-        case .audioSessionInterrupt:
-            print("Audio session interrupt")
-        case .applicationSuspended:
-            print("Application suspended")
-        case .idleTimeout:
-            print("Idle timeout")
-        case .systemError:
-            print("System error")
-        case .notifyWhenFinished:
-            print("Playback finished")
-        case .gameControllerDisconnect:
-            print("Controller disconnected.")
-        case .engineDestroyed:
-            print("Engine destroyed.")
-        @unknown default:
-            print("Unknown error")
-        }
+        Self.logger.notice(
+            """
+            The engine was stopped from an external event.
+            Reason: \(reason.debugMessage)
+            """
+        )
         
         self.engineState = .awaitingStart
     }
@@ -313,44 +302,12 @@ extension HapticsPerformer {
 }
 
 
-
-// MARK: -  Abilities
+// MARK: -  Logger
 extension HapticsPerformer {
     
-    public enum Abilities {
-        
-        /// The haptic engine ignores audio events.
-        ///
-        /// Setting this property to `true` causes the engine to ignore all audio events,
-        /// such as `audioContinuous` and `audioCustom`.
-        /// This also reduces latency of starting haptic playback.
-        ///
-        /// > Important: Changing the value of this property on a running engine has no effect
-        /// until you stop and restart the engine.
-        case hapticsOnly
-        
-        /// The haptic engine will attempt to play haptics and audio events.
-        case audioEnabled
-    }
-}
-
-
-// MARK: -  EngineState
-extension HapticsPerformer {
+    private static let logger = Logger(
+        subsystem: Bundle.module.bundleIdentifier!,
+        category: "HapticsPerformer"
+    )
     
-    public enum EngineState {
-        case uninitialized
-        case started
-        case awaitingStart
-    }
-}
-
-
-// MARK: -  EngineContinuity
-extension HapticsPerformer {
-    
-    public enum EngineContinuity {
-        case stopWhenPlayersFinish
-        case continueWhenPlayersFinish
-    }
 }

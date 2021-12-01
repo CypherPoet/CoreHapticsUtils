@@ -34,28 +34,3 @@ extension HapticsPerformer {
 }
 
 //extension HapticsPerformer.Error: Equatable {}
-
-
-extension HapticsPerformer.Error: LocalizedError {
-    
-    public var errorDescription: String? {
-        switch self {
-        case .engineCreationFailed(error: _):
-            return "\(self)"
-        case .engineStartFailed(error: _):
-            return "\(self)"
-        case .engineFailedToPlayPatternFromFile(fileURL: _, error: _):
-            return "\(self)"
-        case .engineFailedToPlayPatternFromData(data: _, error: _):
-            return "\(self)"
-        case .engineFailedToStop(error: _):
-            return "\(self)"
-        case .playerFailedToPause(error: _):
-            return "\(self)"
-        case .unknownError(_):
-            return "\(self)"
-        case .playerFailedToStop(error: let error):
-            return "\(self)"
-        }
-    }
-}
