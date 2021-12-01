@@ -41,6 +41,8 @@ Select `File` -> `Swift Packages` -> `Add Package Dependency` and enter `https:/
 
 ### Swift Package Manager Projects
 
+
+
 You can add `CypherPoetCoreHapticsUtils` as a package dependency in your `Package.swift` file:
 
 ```swift
@@ -58,7 +60,7 @@ let package = Package(
 ```
 
 
-<!-- 🔑 UNCOMMENT IF REPO NAME MATCHES THE LIBRARY NAME 👇 -->
+<!-- 🔑 UNCOMMENT THE INSTRUCTIONS BELOW IF THE GITHUB REPO NAME MATCHES THE LIBRARY NAME 👇 -->
 
 <!-- From there, refer to `CoreHapticsUtils` as a "target dependency" in any of _your_ package's targets that need it.
 
@@ -76,7 +78,8 @@ targets: [
 ``` -->
 
 
-<!-- 🔑 UNCOMMENT IF REPO NAME DOESN'T MATCH THE LIBRARY NAME 👇 -->
+<!-- 🔑 UNCOMMENT THE INSTRUCTIONS BELOW IF THE GITHUB REPO NAME DOESN'T MATCH THE LIBRARY NAME 👇 -->
+
 
 From there, refer to the `CoreHapticsUtils` "product" delivered by the `CypherPoetCoreHapticsUtils` "package" inside of any of your project's target dependencies:
 
@@ -96,17 +99,8 @@ targets: [
 ]
 ```
 
+
 Then simply `import CoreHapticsUtils` wherever you’d like to use it.
-
-
-## Usage
-
-
-
-## 🗺 Roadmap
-
-- World Domination
-
 
 
 ## Contributing
