@@ -307,7 +307,7 @@ extension HapticsPerformer {
     
     private static let logger = Logger(
         subsystem: Bundle.module.bundleIdentifier!,
-        category: "HapticsPerformer"
+        category: String(describing: HapticsPerformer.self)
     )
     
 }

@@ -6,6 +6,7 @@
 
 import Foundation
 import CoreHaptics
+import os
 
 
 public struct AHAPPattern {
@@ -65,11 +66,21 @@ extension AHAPPattern {
     
     public func dictionaryRepresentation() -> CHHapticPatternDictionary {
         let data = try! JSONEncoder().encode(self)
-
+        
         return try! JSONSerialization
             .jsonObject(
                 with: data,
                 options: .fragmentsAllowed
-        ) as! CHHapticPatternDictionary
+            ) as! CHHapticPatternDictionary
     }
+}
+
+
+// MARK: -  Logger
+extension AHAPPattern {
+    
+    private static let logger = Logger(
+        subsystem: Bundle.module.bundleIdentifier!,
+        category: String(describing: AHAPPattern.self)
+    )
 }
