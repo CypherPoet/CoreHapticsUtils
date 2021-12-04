@@ -11,7 +11,7 @@ import os
 
 public struct AHAPPattern {
     public var name: String?
-    public var version: Double
+    public var version: Double?
     public var metadata: Metadata?
     public var pattern: [PatternElement]
     
@@ -19,7 +19,7 @@ public struct AHAPPattern {
     // MARK: - Init
     public init(
         name: String? = nil,
-        version: Double,
+        version: Double? = nil,
         metadata: Metadata? = nil,
         pattern: [PatternElement] = []
     ){
