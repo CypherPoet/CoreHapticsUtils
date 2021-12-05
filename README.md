@@ -52,7 +52,7 @@ let package = Package(
         .package(
             name: "CypherPoetCoreHapticsUtils",
             url: "https://github.com/CypherPoet/CoreHapticsUtils",
-            .exact("0.0.2")
+            .exact("0.0.3")
         ),
     ],
     //...
